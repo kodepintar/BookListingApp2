@@ -51,8 +51,10 @@ public final class QueryUtils {
                         }
                     }
                     catch (JSONException ex){
-                        authorsList.add("Author Unknown");
+                        Log.e("QueryUtils", "Error parsing JSON", ex);
                     }
+                } else {
+                    authorsList.add("Author Unknown");
                 }
 
                 String title = volumeInfo.getString("title");
