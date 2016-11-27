@@ -42,14 +42,17 @@ public final class QueryUtils {
                 ArrayList<String> authorsList = new ArrayList<>();
 
                 //some books have no author data, check if it is true
-                try {
-                    JSONArray authorsArray = volumeInfo.getJSONArray("authors");
-                    for (int a = 0; a < authorsArray.length(); a++) {
-                        authorsList.add(authorsArray.getString(a));
+                JSONArray authorsArray = volumeInfo.getJSONArray("authors");
+
+                if (authorsArray != null) {
+                    try {
+                        for (int a = 0; a < authorsArray.length(); a++) {
+                            authorsList.add(authorsArray.getString(a));
+                        }
                     }
-                }
-                catch (JSONException ex){
-                    authorsList.add("Author Unknown");
+                    catch (JSONException ex){
+                        authorsList.add("Author Unknown");
+                    }
                 }
 
                 String title = volumeInfo.getString("title");
@@ -58,11 +61,7 @@ public final class QueryUtils {
             }
         }
         catch (JSONException ex) {
-            Log.e("QueryUtils", "Error parsing JSON");
-            Log.e("QueryUtils", ex.toString());
-            //note to reviewer
-            //putting the Throwable "ex" together with the line above gave me an error
-            //separating them seems to solve my problem
+            Log.e("QueryUtils", "Error parsing JSON", ex);
             return null;
         }
         catch (MalformedURLException ex) {
